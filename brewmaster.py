@@ -29,9 +29,9 @@ class BrewMaster(object):
 
     def update_packages(self):
         print("Running brew cask update ....")
-        output = check_output(["brew", "cask", "update"])
+        output = check_output(["brew", "cask", "update"]).decode("utf-8")
         print("Saving updates to log %s" % self.log_filename)
-        self.log(str(datetime.utcnow()) + "\n" + output.decode("utf-8"))
+        self.log(str(datetime.utcnow()) + "\n" + output)
 
 
 if __name__ == '__main__':
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     if args.log:
-        brewmaster = BrewMaster(args.log)
+        brewmaster = BrewMaster(os.path.expanduser(args.log))
         brewmaster.update_packages()
     else:
         brewmaster = BrewMaster(log_filename)
